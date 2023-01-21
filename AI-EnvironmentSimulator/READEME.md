@@ -25,7 +25,7 @@ The program evaluates only one action (one move) at each run.
 Example Program
 
 | Current Location | A-status | B-status | C-status | D-status | Action (Stay in or Move to) |
-| ---------------- | :------: | :------: | :------: | :------: | --------------------------: |
+| :---: | :------: | :------: | :------: | :------: | :--------------------------: |
 | A | Clean | Clean | Clean | Clean | A |
 | B | Not Clean | Clean | Clean | Clean | A |
 | B | Not Clean | Clean | Clean | Not Clean | A |
