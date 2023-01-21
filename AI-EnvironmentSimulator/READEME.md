@@ -4,9 +4,10 @@ Java program to simulate the behaviour of a model-based agent for a vacuum clean
 The vacuum cleaner can move to one of 4 squares: A, B, C, or D as shown in Table 1.
 
 Table 1: vacuum cleaner environment
-|---|---|
-|A|B|
-|C|D|
+| col1 | col2 |
+| ---- | --- -|
+| A | B |
+| C | D |
 
 * The vacuum cleaner checks the status of all squares and takes action based on the following order:
 * If all squares are clean, the vacuum cleaner stays in its current location.
