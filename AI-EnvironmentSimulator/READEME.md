@@ -5,7 +5,7 @@ The vacuum cleaner can move to one of 4 squares: A, B, C, or D as shown in Table
 
 Table 1: vacuum cleaner environment
 | col1 | col2 |
-| ---- | --- -|
+| ---- | ---- |
 | A | B |
 | C | D |
 
