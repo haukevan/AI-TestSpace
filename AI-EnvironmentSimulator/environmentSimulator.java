@@ -1,5 +1,5 @@
-class subscribe {
-    public static void main(String[] args) {
-        System.out.print("HELLO JAVAJ");
+public class MyClass {
+    public static void main(String args[]) {
+        System.out.println("hello java");
     }
 }
