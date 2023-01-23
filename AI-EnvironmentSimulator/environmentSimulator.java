@@ -1,3 +1,13 @@
+/*
+ * Author: Evan Hauk
+ * Student ID: T00023763
+ * Date: Jan 22, 2023
+ * 
+ * COMP3711 - Assignment 1
+ * Environment Simulator
+ * 
+ */
+
 import java.util.HashMap; // import the HashMap class
 
 class MyClass {
@@ -50,9 +60,8 @@ class MyClass {
 
         //check if all squares are clean, then return current
         if (a && b && c && d) { return current; }
-
         //check if current location is not clean, then clean it and return current
-        if (cleanMap.get(letterMap.get(current)) == false ) {
+        else if (cleanMap.get(letterMap.get(current)) == false ) {
             return current;
         }
 
@@ -65,15 +74,9 @@ class MyClass {
             return numberMap.get(next);
         } else if (cleanMap.get(prev) == false) {
             return numberMap.get(prev);
-        }
-
-        //if both neighbour locations are clean, then a diagonal is dirty, move to neighbour location
-        if (cleanMap.get(next) == true && cleanMap.get(prev) == true) {
+        } else {
             return numberMap.get(next);
         }
-
-        //failed case check
-        return 'z';
     }
 
     static int addNext(int prev) {
