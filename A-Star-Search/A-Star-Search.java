@@ -1,10 +1,16 @@
 /*
  * Author: Evan Hauk
  * Student ID: T00023763
- * Date: Jan 31, 2023
+ * Date: Feb 03, 2023
  * 
  * COMP3711 - Assignment 2
- * A* search algorithm
+ * 
+ * Purpose: The A* search algorithm finds the shortest path from start to
+ *          goal using a cost matrix and a heuristic function.  The heuristic
+ *          is an estimate that is less than the actual distance to the end
+ *          for each node.  The algorithm uses the total distance travelled
+ *          plus the heuristic value to make a smart decision on which node
+ *          to try next.
  * 
  */
 
@@ -12,13 +18,13 @@ import java.util.*;
 
 class MyClass {
     //write program to implement search
-    String a_star_search(int start, int goal, int[][]cost, int[] h) {
+    String [] a_star_search(int start, int goal, int[][]cost, int[] h) {
         
+        //initializations
         int current = Integer.MAX_VALUE;
         int lowF = Integer.MAX_VALUE;
         int sucessor_current_cost = Integer.MAX_VALUE;
         int neighbour = Integer.MAX_VALUE;
-
         List <Integer> openSet = new ArrayList <>();
         List <Integer> closedSet = new ArrayList <>();
         List<Integer> neighbours = new ArrayList<>();
@@ -46,6 +52,7 @@ class MyClass {
         long start_time = System.nanoTime();;
         int loops = 0;
 
+        //loop until all nodes are examined in open set
         while(!openSet.isEmpty()) {
             loops++;
             //find lowest fScore in openSet list and set current to position
@@ -57,11 +64,11 @@ class MyClass {
                 }
             }
 
-            //check if current is goal
+            //check if current is goal and exit
             if(current == goal) {
                 long finish_time = System.nanoTime();;
                 long timeElapsed = finish_time - start_time;
-                return reconstructPath(cameFrom, current, timeElapsed, loops);
+                return reconstructPath(cameFrom, current, timeElapsed, loops, fScore[current]);
             }
 
             //remove current from open set add to closed set
@@ -118,12 +125,17 @@ class MyClass {
 
         }
 
-        return "No Path Found";
-
+        String [] noResult = new String[2];
+        noResult[0] = "No Path Found";
+        noResult[1] = "";
+        return noResult;
     }
 
-    static String reconstructPath(HashMap<Integer, Integer> cameFrom, int current, long timeSpent, int iterations) {
 
+    //accepts map of elements and where each one came from, current, time spent, and iterations of the while loop.
+    static String [] reconstructPath(HashMap<Integer, Integer> cameFrom, int current, long timeSpent, int iterations, int fScore) {
+
+        //map the numeric matrix values to match the diagram
         HashMap <Integer, String> alphaMap = new HashMap<>();
         alphaMap.put(0, "A");
         alphaMap.put(1, "B");
@@ -136,32 +148,34 @@ class MyClass {
         alphaMap.put(8, "G2");
         alphaMap.put(9, "G3");
 
-        String resultString = "\nGoal found at: " + current + "\nExecution time: " + timeSpent +
+        String [] resultString = new String [2];
+        resultString[0] = "\nGoal found at: " + current + "\nExecution time: " + timeSpent +
                         " [ns]\nLoop Iterations: " + iterations + "\nPath: ";
 
         ArrayList <Integer> totalPath = new ArrayList<>();
         totalPath.add(current);
 
         while (cameFrom.containsKey(current)) {
-
             current = cameFrom.get(current);
             totalPath.add(0, current);
-
         }
 
         for (int i = 0; i < totalPath.size(); i ++) {
             if (i < totalPath.size() - 1) {
-                resultString += alphaMap.get(totalPath.get(i)) + " -> ";
+                resultString[0] += alphaMap.get(totalPath.get(i)) + " -> ";
             } else {
-                resultString += alphaMap.get(totalPath.get(i));
+                resultString[0] += alphaMap.get(totalPath.get(i)) + "\n";
             }
         }
+
+        resultString[0] += "Path Length: " + fScore;
+        resultString[1] = Integer.toString(fScore);
 
         return resultString;
     }
 
 
-
+    //----------------------------MAIN---------------------------------------
     public static void main(String args[]) {
         
         //cost matrix where [1][0] would be 5 (route from 0 to 1)
@@ -181,16 +195,29 @@ class MyClass {
 
         //identify goal states and save in new vector
         int [] goal_states = {7, 8, 9};
+        HashMap <Integer, String> alpha_map = new HashMap<>();
+        alpha_map.put(7, "G1");
+        alpha_map.put(8, "G2");
+        alpha_map.put(9, "G3");
+
+        
         int start_pos = 0;
+        int shortest_path = Integer.MAX_VALUE;
+        int shortest_route = Integer.MAX_VALUE;
 
         MyClass path = new MyClass();
-        String result = path.a_star_search(start_pos, goal_states[0],cost_matrix, heuristic_vector);
-        System.out.println(result);
 
-        result = path.a_star_search(start_pos, goal_states[1],cost_matrix, heuristic_vector);
-        System.out.println(result);
+        //print out A* results and shortest goal path
+        for (int i = 0; i < goal_states.length; i++) {
+            String [] result = path.a_star_search(start_pos, goal_states[i],cost_matrix, heuristic_vector);
+            System.out.println(result[0]);
+            if ( Integer.parseInt(result[1]) < shortest_path ) {
+                shortest_path = Integer.parseInt(result[1]);
+                shortest_route = i;
+            }
+        }
 
-        result = path.a_star_search(start_pos, goal_states[2],cost_matrix, heuristic_vector);
-        System.out.println(result);
+        System.out.println("\nShortest route is to " + alpha_map.get(goal_states[shortest_route]) + " at " + shortest_path + " units.");
+
     }
 }
